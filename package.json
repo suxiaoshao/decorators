@@ -4,11 +4,16 @@
   "scripts": {
     "build": "slidev build",
     "dev": "slidev --open",
-    "export": "slidev export"
+    "export": "slidev export",
+    "ts": "tsc --build tsconfig.json -w"
   },
   "dependencies": {
     "@slidev/cli": "^0.40.3",
     "@slidev/theme-default": "*",
-    "@slidev/theme-seriph": "*"
+    "@slidev/theme-seriph": "*",
+    "slidev-theme-purplin": "^1.2.0"
+  },
+  "devDependencies": {
+    "typescript": "5.0.0-beta"
   }
 }

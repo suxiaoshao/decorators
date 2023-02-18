@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
@@ -12,14 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["vite/client"],
-    "paths": {
-      "@bookmarks/*": ["./bookmarks/src/*"],
-      "@collections/*": ["./collections/src/*"]
-    }
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules"]
