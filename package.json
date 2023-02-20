@@ -4,7 +4,7 @@
   "scripts": {
     "build": "slidev build",
     "dev": "slidev --open",
-    "export": "slidev export",
+    "export": "slidev export --dark",
     "ts": "tsc --build tsconfig.json -w"
   },
   "dependencies": {
@@ -12,9 +12,13 @@
     "@slidev/theme-bricks": "^0.0.2",
     "@slidev/theme-default": "^0.21.2",
     "@slidev/theme-seriph": "^0.21.3",
+    "sass": "^1.58.3",
+    "slidev-theme-penguin": "^1.6.1",
     "slidev-theme-purplin": "^1.2.0"
   },
   "devDependencies": {
+    "@iconify-json/logos": "^1.1.23",
+    "playwright-chromium": "^1.30.0",
     "typescript": "5.0.0-beta"
   }
 }

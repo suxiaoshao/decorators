@@ -1,19 +1,14 @@
 ---
-theme: bricks
+theme: penguin
 class: 'text-center'
 # https://sli.dev/custom/highlighters.html
-highlighter: prism
+highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: true
 # some information about the slides, markdown enabled
-info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
 # persist drawings in exports and build
 drawings:
-  persist: false
+  persist: true
 # page transition
 transition: slide-left
 # use UnoCSS
@@ -23,6 +18,8 @@ css: unocss
 # Decorators
 
 装饰器
+
+[Documentations](https://drive.google.com/file/d/10TrRNL9ADEo9HSsqchxiOEE5LrGTYSJL/view?usp=sharing) · [GitHub](https://github.com/tc39/proposal-decorators) · [gitlab](https://git.garena.com/weijie.su/decorators)
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -514,6 +511,7 @@ transition: slide-up
 # Decorator APIs
 
 类自动访问器装饰器 示例
+
 ```typescript
 function logged(value, { kind, name }) {
   let { get, set } = value;
@@ -553,6 +551,7 @@ transition: slide-up
 * 类装饰器的初始化器是在类被完全定义后，在类的静态字段被分配后运行。
 * 类元素初始化器在类的构造过程中运行，在类字段被初始化之前。
 * 类的静态元素初始化器在类的定义过程中运行，在类的静态字段被定义之前，但在类元素被定义之后。
+
 ---
 layout: statement
 class: text-center
@@ -560,4 +559,4 @@ class: text-center
 
 # Learn More
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+[Documentations](https://drive.google.com/file/d/10TrRNL9ADEo9HSsqchxiOEE5LrGTYSJL/view?usp=sharing) · [GitHub](https://github.com/tc39/proposal-decorators) · [gitlab](https://git.garena.com/weijie.su/decorators)
