@@ -1,15 +1,10 @@
 ---
-# try also 'default' to start simple
-theme: Purplin
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
-# apply any windi css classes to the current slide
+theme: bricks
 class: 'text-center'
 # https://sli.dev/custom/highlighters.html
-highlighter: shiki
+highlighter: prism
 # show line numbers in code blocks
-lineNumbers: false
+lineNumbers: true
 # some information about the slides, markdown enabled
 info: |
   ## Slidev Starter Template
@@ -25,25 +20,9 @@ transition: slide-left
 css: unocss
 ---
 
-# Welcome to Slidev
+# Decorators
 
-Presentation slides for developers
-
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
+装饰器
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -53,39 +32,39 @@ The last comment block of each slide will be treated as slide notes. It will be 
 transition: fade-out
 ---
 
-# What is Slidev?
+# JS新特性产生流程
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+首先看一下目前标准流程是 5 个阶段，Stage0 ~ Stage 4
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+* Stage0：稻草人(Strawpersion），由TC39成员发起，通常是提出新想法或是对未纳入正式的提案进行修改。
 
-<br>
-<br>
+* Stage1：提案(Proposal)，提出一些具体的问题和解决方案。
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+* Stage2：草稿(Draft)，用ES语法尽可能精确地描述提案的语法、语义和API，并提供实验性的实现。意味着提案会有很大概率出现在正式版本的中。
 
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
+* Stage3：候选人(Candidate)，到了该阶段，提案基本已经定型，仅根据外部反馈针对关键问题进行更改。
 
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+* Stage4：完成(Finish），该提案会出现在正式的规范文档中，并在下一个版本的ES中正式支持。
+
+<!-- 
+一般来说到 stage3 的时候 typescript/babel 等转译器就会支持了
+ -->
+
+---
+
+# Introduction
+
+**Decorators** 是对类、类元素或其他 JavaScript 语法形式在定义期间调用的函数。
+
+```typescript
+@defineElement("my-class")
+class C extends HTMLElement {
+  @reactive accessor clicked = false;
+  @callOnRender fetchDate(){    
+    // todo
+  }
 }
-</style>
+```
 
 <!--
 Here is another comment.
@@ -95,312 +74,487 @@ Here is another comment.
 transition: slide-up
 ---
 
-# Navigation
+# 装饰器的三种能力
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
+* 替换：将所修饰的元素替换成其他值(用其他方法替换所修饰的方法，用其他属性替换所修饰的属性等等)；
 
-### Keyboard Shortcuts
+* 访问：通过访问器来访问所修饰元素的能力；
 
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+* 初始化：初始化所修饰的元素。
 
 ---
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
+transition: slide-up
 ---
 
-# Code
+# 装饰器的四种类型
 
-Use code snippets and get the highlighting directly![^1]
+* Classes
+* Class fields (public, private, and static)
+* Class methods (public, private, and static)
+* Class accessors (public, private, and static)
 
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
+---
+transition: slide-up
+---
 
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
+# 详细设计
+
+1. Decorator 标识符 (在@后面的名字) 被放在被修饰的类、field、method 之前
+2. 装饰器在类的定义过程中被调用（作为函数），在方法被声明之后，但在构造函数和原型被组合起来之前。
+3. 类装饰器在其他所有装饰器被调用后调用
+
+---
+transition: slide-up
+---
+
+# 调用顺序
+
+Evaluating decorators
+
+同类的装饰器从上到下，从左到右开始调用，自定义访问装饰器和get、set以及方法装饰器一起排序，然后是属性装饰器，然后是类装饰器。
+
+同一个属性的装饰器从下到上调用。
+
+```typescript
+@step('5')
+@step('4')
+name:string='Step'
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
+类似于
 
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
+```typescript
+step('5')(step('4')(name))
+```
 
 ---
+transition: slide-up
+---
 
-# Components
+# 调用装饰器
 
 <div grid="~ cols-2 gap-4">
 <div>
 
-You can use Vue components directly inside your slides.
+当装饰器被调用时，它们接收两个参数。
 
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
+1. 被装饰的值，或者在类字段的情况下是 undefined。
+2. 一个包含被装饰的值的上下文对象
 
 </div>
 <div>
 
-```html
-<Tweet id="1390115482657726468" />
+ts 类型定义如下
+
+```typescript
+type Decorator = (value: Input, context: {
+  kind: string;
+  name: string | symbol;
+  access: {
+    get?(): unknown;
+    set?(value: unknown): void;
+  };
+  private?: boolean;
+  static?: boolean;
+  addInitializer?(initializer: () => void): void;
+}) => Output | void;
 ```
 
-<Tweet id="1390115482657726468" scale="0.65" />
-
+Input和Output代表了传递给特定装饰器和从其返回的值。所有的装饰器都可以选择不返回任何东西，默认使用原始的值。
 </div>
 </div>
 
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
-
 ---
-class: px-20
+transition: slide-up
 ---
 
-# Themes
+# 调用装饰器
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+<div grid="~ cols-2 gap-4">
+<div>
 
-<div grid="~ cols-2 gap-2" m="-t-2">
+ts 类型定义如下
 
-```yaml
----
-theme: default
----
+```typescript
+type Decorator = (value: Input, context: {
+  kind: string;
+  name: string | symbol;
+  access: {
+    get?(): unknown;
+    set?(value: unknown): void;
+  };
+  private?: boolean;
+  static?: boolean;
+  addInitializer?(initializer: () => void): void;
+}) => Output | void;
 ```
 
-```yaml
+Input和Output代表了传递给特定装饰器和从其返回的值。所有的装饰器都可以选择不返回任何东西，默认使用原始的值。
+
+</div>
+<div>
+
+上下文对象也根据被装饰的值而变化:
+
+* `kind`: 被装饰的值的种类,包含这些值:"class" "method" "getter" "setter" "field" "accessor"
+* `name`: 值的名称，如果是私有元素，则是对它的描述（例如，可读的名称）。
+* `access`: 一个包含访问该值的方法的对象。
+* `static`: 是否为静态类元素。只适用于类元素。
+* `private`: 是否是一个私有的类元素。只适用于类元素。
+* `addInitializer`: 允许用户添加额外的初始化逻辑
+
+</div>
+</div>
+
 ---
-theme: seriph
+transition: slide-up
 ---
+
+# Decorator APIs
+
+类定义装饰器
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+定义
+
+```typescript
+type ClassDecorator = (value: Function, context: {
+  kind: "class";
+  name: string | undefined;
+  addInitializer(initializer: () => void): void;
+}) => Function | void;
 ```
 
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
+类装饰器接收被装饰的类作为第一个参数，并可以选择返回一个新的可调用值（一个类、函数或代理）来替代它。如果返回的是一个不可调用的值，那么就会抛出一个错误。
 
 </div>
+<div>
 
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
+举例
 
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
+```typescript
+function logged(value, { kind, name }) {
+  if (kind === "class") {
+    return class extends value {
+      constructor(...args) {
+        super(...args);
+        console.log(`constructing an instance of ${name} with arguments ${args.join(", ")}`);
+      }
+    }
   }
+
+  // ...
 }
-</script>
 
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
+@logged
+class C {}
 
-[Learn More](https://sli.dev/guide/animations.html#motion)
+new C(1);
+// constructing an instance of C with arguments 1
+```
 
+</div>
 </div>
 
 ---
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
+transition: slide-up
 ---
 
-# Diagrams
+# Decorator APIs
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+类方法装饰器
 
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
+<div grid="~ cols-2 gap-4">
+<div>
 
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+定义
+
+```typescript
+type ClassMethodDecorator = (value: Function, context: {
+  kind: "method";
+  name: string | symbol;
+  access: { get(): unknown };
+  static: boolean;
+  private: boolean;
+  addInitializer(initializer: () => void): void;
+}) => Function | void;
 ```
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
+类方法装饰器接收被装饰的方法作为第一个值，并可以选择返回一个新的方法来替换它。如果一个新的方法被返回，它将取代原型上的原方法（如果是静态方法，则取代类本身）。如果返回任何其他类型的值，将会产生一个错误。
 
-```plantuml {scale: 0.7}
-@startuml
+</div>
+<div>
 
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
+举例
 
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
+```typescript
+function logged(value, { kind, name }) {
+  if (kind === "method") {
+    return function (...args) {
+      console.log(`starting ${name} with arguments ${args.join(", ")}`);
+      const ret = value.call(this, ...args);
+      console.log(`ending ${name}`);
+      return ret;
+    };
   }
 }
 
+class C {
+  @logged
+  m(arg) {}
+}
 
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+new C().m(1);
+// starting m with arguments 1
+// ending m
 ```
 
 </div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
----
-src: ./pages/multiple-entries.md
-hide: false
----
+</div>
 
 ---
-layout: center
+transition: slide-up
+---
+
+# Decorator APIs
+
+类访问器装饰器
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+定义
+
+```typescript
+type ClassGetterDecorator = (value: Function, context: {
+  kind: "getter";
+  name: string | symbol;
+  access: { get(): unknown };
+  static: boolean;
+  private: boolean;
+  addInitializer(initializer: () => void): void;
+}) => Function | void;
+
+type ClassSetterDecorator = (value: Function, context: {
+  kind: "setter";
+  name: string | symbol;
+  access: { set(value: unknown): void };
+  static: boolean;
+  private: boolean;
+  addInitializer(initializer: () => void): void;
+}) => Function | void;
+```
+
+</div>
+<div>
+
+访问器装饰器接收原始的底层getter/setter函数作为第一个值，并且可以选择返回一个新的getter/setter函数来替代它。像方法装饰器一样，这个新的函数被放置在原型上，以取代原来的函数（或者对于静态访问器来说，被放置在类上），如果返回任何其他类型的值，将被抛出一个错误。
+
+举例
+
+```typescript
+class C {
+  @foo
+  get x() {
+    // ...
+  }
+  set x(val) {
+    // ...
+  }
+}
+```
+
+</div>
+</div>
+
+---
+transition: slide-up
+---
+
+# Decorator APIs
+
+类属性装饰器
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+定义
+
+```typescript
+type ClassFieldDecorator = (value: undefined, context: {
+  kind: "field";
+  name: string | symbol;
+  access: { get(): unknown, set(value: unknown): void };
+  static: boolean;
+  private: boolean;
+}) => (initialValue: unknown) => unknown | void;
+```
+
+与方法和访问器不同，类字段在被装饰时没有一个直接的输入值。相反，用户可以选择返回一个初始化函数，该函数在字段被分配时运行，接收字段的初始值并返回一个新的初始值。如果除了函数之外的任何其他类型的值被返回，将抛出一个错误。
+
+</div>
+<div>
+
+举例
+
+```typescript
+function logged(value, { kind, name }) {
+  if (kind === "field") {
+    return function (initialValue) {
+      console.log(`initializing ${name} with value ${initialValue}`);
+      return initialValue;
+    };
+  }
+
+  // ...
+}
+
+class C {
+  @logged x = 1;
+}
+
+new C();
+// initializing x with value 1
+```
+
+</div>
+</div>
+
+---
+transition: slide-up
+---
+
+# Decorator APIs
+
+类自动访问器装饰器
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+类的自动访问器是一种新的结构，通过在类的字段前添加访问器关键字来定义。
+
+```typescript
+class C {
+  accessor x = 1;
+}
+```
+
+类方法装饰器接收被装饰的方法作为第一个值，并可以选择返回一个新的方法来替换它。如果一个新的方法被返回，它将取代原型上的原方法（如果是静态方法，则取代类本身）。如果返回任何其他类型的值，将会产生一个错误。
+
+</div>
+<div>
+
+与常规字段不同，自动访问器在类原型上定义 getter 和 setter。这个 getter 和 setter 默认用于获取和设置私有字段上的值。
+
+```typescript
+class C {
+  #x = 1;
+
+  get x() {
+    return this.#x;
+  }
+
+  set x(val) {
+    this.#x = val;
+  }
+}
+```
+
+</div>
+</div>
+
+---
+transition: slide-up
+---
+
+# Decorator APIs
+
+类自动访问器装饰器
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+定义
+
+```typescript
+type ClassAutoAccessorDecorator = (
+        value: {
+          get: () => unknown;
+          set(value: unknown) => void;
+        },
+        context: {
+          kind: "accessor";
+          name: string | symbol;
+          access: { get(): unknown, set(value: unknown): void };
+          static: boolean;
+          private: boolean;
+          addInitializer(initializer: () => void): void;
+        }
+) => {
+  get?: () => unknown;
+  set?: (value: unknown) => void;
+  init?: (initialValue: unknown) => unknown;
+} | void;
+```
+
+</div>
+<div>
+
+与字段装饰器不同，自动访问器装饰器接收一个值，该值是一个对象，包含在类的原型(或者在静态自动访问器的情况下类本身)上定义的 get 和 set 访问器。然后装饰器可以包装这些属性，并返回一个新的 get 和/或 set，允许装饰器截获对属性的访问。这是一种在字段中不可能实现的功能，但在自动访问器中可以实现。此外，自动访问器可以返回一个 init 函数，该函数可用于更改私有字段中备份值的初始值，类似于字段修饰符。如果返回了一个对象，但没有了任何值，默认使用原始行为。如果返回包含这些属性的对象之外的其他类型的值，将引发错误。
+
+</div>
+</div>
+
+---
+transition: slide-up
+---
+
+# Decorator APIs
+
+类自动访问器装饰器 示例
+```typescript
+function logged(value, { kind, name }) {
+  let { get, set } = value;
+  return {
+    get() {
+      console.log(`getting ${name}`);
+      return get.call(this);
+    },
+    set(val) {
+      console.log(`setting ${name} to ${val}`);
+      return set.call(this, val);
+    },
+    init(initialValue) {
+      console.log(`initializing ${name} with value ${initialValue}`);
+      return initialValue;
+    }
+  };
+}
+class C {@logged accessor x = 1;}
+let c = new C();// initializing x with value 1
+c.x;// getting x
+c.x = 123;// setting x to 123
+```
+
+---
+transition: slide-up
+---
+
+# addInitializer
+
+添加初始化逻辑
+
+`addInitializer` 方法在提供给装饰器的每一种类型的值的上下文对象上都可用，
+除了类字段。这个方法可以被调用，以便将初始化函数与类或类元素联系起来，
+在值被定义后可以用来运行任意的代码，以便完成设置。这些初始化器的时机取决于装饰器的类型。
+
+* 类装饰器的初始化器是在类被完全定义后，在类的静态字段被分配后运行。
+* 类元素初始化器在类的构造过程中运行，在类字段被初始化之前。
+* 类的静态元素初始化器在类的定义过程中运行，在类的静态字段被定义之前，但在类元素被定义之后。
+---
+layout: statement
 class: text-center
 ---
 
